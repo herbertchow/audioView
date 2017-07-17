@@ -1,12 +1,12 @@
 <!--param start-->
     //修改cdn的绝对路径（测试环境）
-    fis.set('cdn-path','https://test.nie.163.com/test_cdn/yys/m/zt/20170323183208');
+    fis.set('cdn-path','');
     //修改cdn的绝对路径（正式环境）
-    fis.set('cdn-path-release','https://yys.res.netease.com/m/zt/20170323183208');
+    fis.set('cdn-path-release','');
     //修改雪碧图放大缩小倍数，默认是1，iphone是0.5
     fis.set('css-scale',1);
     //修改include文件的域名
-    fis.set('include-host','http://yys.163.com/');
+    fis.set('include-host','');
 <!--end-->
 
 
