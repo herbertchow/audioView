@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AudioContext(Base))</title>
+    <!-- <script src="//cdn.bootcss.com/zepto/1.0rc1/zepto.min.js"></script> -->
+</head>
+<body>
+<button id="button">button</button>
+<script>
+    // 设置音频流
+    var MusicBuffer = null;
+    // Fix up prefixing
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    var context = new AudioContext();
+    // 创建音量节点
+    var gainNode = context.createGain();
+    var volume = 1.00;                  // 声音的范围值     -无穷大（音频质量变化，开始出现破音）  <   -1(声音最大)   <   0  <   1(声音最大)  <   无穷大（音频质量变化，开始出现破音）
+
+    // 统一调用
+    function loadBgSound(url) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        /* 音频文件数据为二进制（非文本），所以我们设置要求responseType是arraybuffer */
+        request.responseType = 'arraybuffer';
+        // Decode asynchronously
+        request.onload = function () {
+            context.decodeAudioData(request.response, function (buffer) {
+                MusicBuffer = buffer;
+                playsound(MusicBuffer);
+            }, function () {
+                console.log("Error decoding file");
+            });
+        };
+        request.send();
+    }
+
+    function playsound(buffer) {
+        var source = context.createBufferSource();      // 创建资源
+        source.buffer = buffer;                          // 确认播放资源
+        // 连接节点
+        source.connect(gainNode);
+        gainNode.connect(context.destination);
+        //source.connect(context.destination);
+        source.start(0);                                // start后面的数字，亲测  ----  延时多少秒播放
+    }
+
+    loadBgSound("data/bg.mp3");
+
+    // 控制音量变化
+    var setVolume = setInterval(function () {
+        volume = volume - 0.05;
+        if (volume <= 0) {
+            gainNode.gain.value = 0;
+            clearInterval(setVolume);
+        } else {
+            gainNode.gain.value = volume;
+        }
+    }, 300);
+
+
+    /*// Stereo
+     var channels = 2;
+     // Create an empty two second stereo buffer at the
+     // sample rate of the AudioContext
+     var frameCount = context.sampleRate * 2.0;
+     var myArrayBuffer = context.createBuffer(2, frameCount, context.sampleRate);
+
+     document.getElementById("button").onclick = function() {
+     // Fill the buffer with white noise;
+     // just random values between -1.0 and 1.0
+     for (var channel = 0; channel < channels; channel++) {
+     // This gives us the actual ArrayBuffer that contains the data
+     var nowBuffering = myArrayBuffer.getChannelData(channel);
+     for (var i = 0; i < frameCount; i++) {
+     // Math.random() is in [0; 1.0]
+     // audio needs to be in [-1.0; 1.0]
+     nowBuffering[i] = Math.random() * 2 - 1;
+     }
+     }
+     console.log(myArrayBuffer.duration);                // 在duration所述的属性AudioBuffer接口返回一个双表示的持续时间，以秒为单位，存储在缓冲器中的PCM数据。
+     console.log(myArrayBuffer.length);                  // 在length所述的属性AudioBuffer接口返回表示长度的整数，在样本帧，存储在缓冲器中的PCM数据。
+     console.log(myArrayBuffer.numberOfChannels);        // 在numberOfChannels所述的属性AudioBuffer接口返回表示由存储在缓冲器中的PCM数据中描述的离散的音频信道数的整数。
+     console.log(myArrayBuffer.sampleRate);              // 在sampleRate所述的属性AudioBuffer接口返回一个表示采样率的浮子，在每秒采样，存储在缓冲器中的PCM数据。
+     };*/
+</script>
+</body>
+</html>

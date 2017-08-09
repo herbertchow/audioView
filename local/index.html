@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="canvas-wrap">
+    <canvas id="audioDemo"></canvas>
+</div>
+
+<div class="canvas-wrap2">
+    <canvas id="audioDemo2"></canvas>
+</div>
+
+<audio src="data/bg.mp3" crossorigin="anonymous" id="audio" loop="loop" type="audio/mp3" preload="load"></audio>
+
+<audio src="data/bg.mp3" crossorigin="anonymous" id="audio2" loop="loop" type="audio/mp3" preload="load"></audio>
+
+<div class="music_btn playing"></div>
+<div class="pushBtn"></div>
+<div class="loudBtn"></div>
+<div class="downBtn"></div>
+<div class="stopBtn"></div>
+
+<script type="text/javascript" src="zepto.js"></script>
+<script type="text/javascript" src="audioView.js"></script>
+
+<script type="text/javascript">
+
+//调用实例
+// Mobile.setting({//设置对象所有实例的公有参数
+//     param1:"1111",
+//     param2:"2222"
+//  })
+// var mb = Mobile.create({//创建实例1
+//     param1:"aaa",
+//     param2:"bbb",
+//     callback:function(){}
+// });
+
+var adV = AudioViewCompoment.create({//创建实例1
+    parent:'.canvas-wrap', //必填
+    canvas:'#audioDemo', //必填
+    audio:'#audio', //必填
+    playBtn:'.music_btn',
+    pushBtn:'.pushBtn',
+    incBtn:'.loudBtn',
+    deBtn:'.downBtn',
+    stopBtn:'.stopBtn'
+});
+
+var adV2 = AudioViewCompoment.create({//创建实例1
+    parent:'.canvas-wrap2',
+    canvas:'#audioDemo2',
+    audio:'#audio2'
+});
+
+
+// $('.music_btn').on('click',function(){
+//     adV2.play();
+//     adV2.startAni();
+// });
+// $('.pushBtn').on('click',function(){
+//     adV2.pushMus();
+// });
+// $('.loudBtn').on('click',function(){
+//     adV2.incVol();
+// });
+// $('.downBtn').on('click',function(){
+//     adV2.deVol();
+// });
+// $('.stopBtn').on('click',function(){
+//     adV2.stop();
+// });
+
+</script>
+</body>
+</html>
